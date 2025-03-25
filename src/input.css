@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Poppins'; /* Nome que você usará para aplicar a fonte */
+    src: url('fonts/Poppins-Regular.woff2') format('woff2'), /* Aponte para o arquivo da fonte */
+         url('fonts/Poppins-Regular.woff') format('woff');
+    font-weight: 400; /* Defina o peso da fonte */
+    font-style: normal; /* Defina o estilo como normal (não itálico) */
+  }
+  

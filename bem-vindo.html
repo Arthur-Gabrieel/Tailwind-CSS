@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+    <link href="./output.css" rel="stylesheet">
+</head>
+
+<!-- Corpo -->
+<body class="flex bg-blue-400 bg-cover bg-center" style="background-image: url('src/img/pexels-codioful-7135014.jpg');">
+    <!--Quadrado Bem-Vindo -->
+    <div class="flex mt-50 ml-150 justify-center items-center bg-gray-200 w-150 h-100 rounded-xl shadow-[4px_4px_15px_rgba(0,0,0,0.3)]">
+        <h2 id="mensagem">Carregando...</h2>
+
+        <button class="flex justify-center items-center relative top-20 right-43 w-20 h-10 rounded-sm bg-blue-300 border-2 border-black" onclick="logout()">Sair</button>
+    </div>
+
+    <script>
+        // Função para carregar a mensagem de boas-vindas
+        function carregarMensagem() {
+            const usuarioEmail = localStorage.getItem("usuarioEmail");
+
+            if (usuarioEmail) {
+                document.getElementById("mensagem").innerText = `Bem-vindo, ${usuarioEmail}!`;
+            } else {
+                document.getElementById("mensagem").innerText = "Usuário não autenticado!";
+            }
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem("usuarioEmail");
+            window.location.href = "cadastro.html";
+        }
+
+        // Carregar a mensagem de boas-vindas ao carregar a página
+        carregarMensagem();
+    </script>
+</body>
+</html>

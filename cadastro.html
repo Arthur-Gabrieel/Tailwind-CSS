@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login com Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="./output.css" rel="stylesheet">
+
+    <style>
+        /* Animação Botão*/
+        @keyframes pressionado {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(0.95);
+            }
+            60% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pressionado {
+            animation: pressionado 0.2s ease-in-out;
+        }
+    </style>
+</head>  
+
+<!-- Corpo -->
+<body class="flex bg-blue-400 bg-cover bg-center" style="background-image: url('src/img/pexels-codioful-7135014.jpg');">
+
+    <!-- Quadrado login -->
+<div class="flex justify-center items-center mt-50 ml-150 w-150 h-100 bg-gray-100  border-white rounded-xl shadow-[4px_4px_15px_rgba(0,0,0,0.3)]">
+
+    <!--Título do Login-->
+    <h2 class="text-3xl flex relative -top-40 left-35">Login com Supabase</h2>
+
+    <!-- labels E-mail e Senha -->
+    <label class="flex relative right-40 -top-5">E-mail:</label>
+    <label class="flex relative right-52 top-17">Senha:</label>
+
+    <form class="flex flex-col" onsubmit="return false;">
+
+        <!-- Caixa e-mail -->
+        <input class=" flex  relative right-45 top-5 h-10 pl-3 border-b-2 border-b-black  " type="email" id="email" placeholder="Digite seu email" required>
+
+        <!-- Caixa Senha -->
+        <input class=" flex relative right-45 top-18 h-10 pl-3 border-b-2 border-b-black" type="password" id="senha" placeholder="Digite sua senha" required>
+
+        <!-- Botão Entrar -->
+        <button id="entrarButton" class="flex justify-center items-center relative top-25 right-60 w-32 bg-blue-300 rounded-sm border-2 border-black cursor-pointer" type="button" onclick="login()">Entrar</button>
+
+        <!-- Botão Cadastrar -->
+        <button id="cadastrarButton" class="flex justify-center items-center  relative top-18 right-16 w-32 rounded-sm  bg-blue-300 border-2 border-black cursor-pointer"  type="button" onclick="cadastrar()">Cadastrar</button>
+
+        <!-- Mensagem após o Login/Cadastro -->
+        <p class=" flex  relative top-25 right-45" id="mensagem"></p>
+    </form>
+</div> 
+    
+
+    <script>
+        //Aanimação Botão
+        function addPressEffect(buttonId) {
+            const button = document.getElementById(buttonId);
+            button.classList.add('pressionado');
+            
+         
+            setTimeout(() => {
+                button.classList.remove('pressionado');
+            }, 200);
+        } 
+        
+        document.getElementById("entrarButton").addEventListener("click", function() {
+            addPressEffect("entrarButton");
+            login(); 
+        });
+
+        document.getElementById("cadastrarButton").addEventListener("click", function() {
+            addPressEffect("cadastrarButton");
+            cadastrar(); 
+        });
+
+        const supabase = window.supabase.createClient(
+            "https://mnifumfjlfrxtjqyhpkj.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uaWZ1bWZqbGZyeHRqcXlocGtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5ODk4NjAsImV4cCI6MjA1ODU2NTg2MH0.Nm49gGKfSCBL2__ICFOIC45lGLFpDsV--DEHUQGg7DU"
+        );
+
+        async function login() {
+            console.log("Tentando fazer login...");
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+            
+            if (!email || !senha) {
+                document.getElementById("mensagem").innerText = "Preencha todos os campos!";
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+
+            if (error) {
+                document.getElementById("mensagem").innerText = "Erro: " + error.message;
+            } else {
+                document.getElementById("mensagem").innerText = "Login realizado com sucesso!";
+                localStorage.setItem("usuarioEmail", email);
+                setTimeout(() => {
+                    window.location.href = "bem-vindo.html";
+                }, 2000);
+            }
+        }
+
+        async function cadastrar() {
+            console.log("Tentando cadastrar...");
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+
+            if (!email || !senha) {
+                document.getElementById("mensagem").innerText = "Preencha todos os campos!";
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signUp({ email, password: senha });
+
+            if (error) {
+                document.getElementById("mensagem").innerText = "Erro: " + error.message;
+            } else {
+                document.getElementById("mensagem").innerText = "Cadastro realizado com sucesso!";
+            }
+        }
+    </script>
+
+</body>
+</html>
